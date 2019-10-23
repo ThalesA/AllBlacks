@@ -1,0 +1,60 @@
+<main role="main" class="container torcedor mt-5 mb-5 ">
+    <?php if($this->view->sucessoCadastro) { ?>
+
+        <small class="form-text text-success">Deletado com sucesso!</small>
+
+    <?php } ?>
+	<a href="/novo" class="btn btn-primary novo">Novo</a>
+	<h3 class="mb-3 mt-3">Tabela torcedores</h3>
+	<table id="example" class="table table-striped table-bordered " style="width:100%">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <!--<th>Documento</th>-->
+                <!--<th>CEP</th>-->
+                <th>Endereço</th>
+                <!--<th>Bairro</th>-->
+                <th>Cidade</th>
+                <th>UF</th>
+                <th>Telefone</th>
+                <th>E-mail</th>
+                <th>Ativo</th>
+                <th>Acões</th>
+                <th>Mensagem</th>
+            </tr>
+        </thead>
+        <tbody>
+        	<?php foreach ($this->view->torcedores as $indice => $torcedor) { ?>
+        		<tr>
+	                <td><?= $torcedor['nome'] ?></td>
+	                <!--<td><?= $torcedor['documento'] ?></td>-->
+	                <!--<td><?= $torcedor['cep'] ?></td>-->
+	                <td><?= $torcedor['endereco'] ?></td>
+	                <!--<td><?= $torcedor['bairro'] ?></td>-->
+	                <td><?= $torcedor['cidade'] ?></td>
+	                <td><?= $torcedor['uf'] ?></td>
+	                <td><?= $torcedor['telefone'] ?></td>
+	                <td><?= $torcedor['email'] ?></td>
+	                <td><?= $torcedor['ativo'] ?></td>
+	                <td><a href="/editar?id=<?=$torcedor['id']?>">Editar</a>/<a href="/delete?id=<?=$torcedor['id']?>">Excluir</a></td>
+                    <td><a href="/mensagem?email=<?= $torcedor['email'] ?>">Enviar Mensagem</a></td>
+	            </tr>
+        	<?php } ?>
+        <tfoot>
+            <tr>
+                <th>Nome</th>
+                <!--<th>Documento</th>-->
+                <!--<th>CEP</th>-->
+                <th>Endereço</th>
+                <!--<th>Bairro</th>-->
+                <th>Cidade</th>
+                <th>UF</th>
+                <th>Telefone</th>
+                <th>E-mail</th>
+                <th>Ativo</th>
+                <th>Acões</th>
+                <th>Mensagem</th>
+            </tr>
+        </tfoot>
+    </table>
+</main>

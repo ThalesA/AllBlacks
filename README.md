@@ -1,0 +1,1 @@
+Para atender a solução proposta usei um sistema em mvc, criando tela para adição do arquivo xml, lista dos torcedores existentes na base de dados, edição dos torcedore e exclusão, e outra tela para envio de e-mail.
