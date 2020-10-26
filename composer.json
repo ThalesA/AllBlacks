@@ -1,7 +1,8 @@
 {
 	"name": "AllBlacks",
 	"require": {
-		"php": ">= 7.0"
+		"php": ">= 7.0",
+		"twig/twig": "~1.0"
 	},
 	"authors": [
 		{

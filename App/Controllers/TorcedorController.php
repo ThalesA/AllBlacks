@@ -15,67 +15,69 @@ use PHPMailer\PHPMailer\Exception;
 use MF\Controller\Action;
 use MF\Model\Container;
 
-class TorcedorController extends Action {
-
-	public function torcedores() {
+class TorcedorController extends Action
+{
+	public function torcedores()
+    {
 		$torcedor = Container::getModel('Torcedor');
 
 		$torcedores = $torcedor->getAll();
 
-		$this->view->torcedores = $torcedores;
-
-		$this->render('torcedores');
+        $this->render('torcedores', $torcedores);
 	}
 
-	public function delete() {
-
+	public function delete()
+    {
 		$torcedor = Container::getModel('Torcedor');
 		$id = $_GET['id'];
 
 		$torcedor->__set('id', $id);
-		
+
 		$torcedor->delete($id);
 
-		header('Location: /torcedores');
+        $sucessoCadastro = true;
+
+        $this->render('torcedores', $sucessoCadastro);
 	}
 
-	public function editar() {
+	public function editar()
+    {
 		$torcedor = Container::getModel('Torcedor');
 
 		$id = $_GET['id'];
 
 		$torcedor->__set('id', $id);
-		
-		$dado = $torcedor->torcedorId($id);
 
-		$this->view->dados = $dado;
-		$this->render('editar');
+        $dado = $torcedor->torcedorId($id);
+
+        $this->render('editar', $dado);
 	}
 
-	public function editarTorcedor() {
+	public function editarTorcedor()
+    {
 		$torcedor = Container::getModel('Torcedor');
-		
+
 		$id = $_POST['id'];
-		
+
 		$torcedor->__set('telefone', $_POST['telefone']);
 		$torcedor->__set('email', $_POST['email']);
 
-		if ($torcedor->update($id)) {
-			$this->view->sucessoCadastro = true;
-		} else {
-			$this->view->erroCadastro = true;
-		}
+        if ($torcedor->update($id)) {
+            $msg = 'ok';
+        } else {
+            $msg = 'erro';
+        }
 
-		header('Location: /editar?id='.$id);
-		//$this->render('editar?id=$id');
-
+        header('Location: /editar?id='.$id);
 	}
 
-	public function novo() {
+	public function novo()
+    {
 		$this->render('novo');
 	}
 
-	public function novoTorcedor() {
+	public function novoTorcedor()
+    {
 		$torcedor = Container::getModel('Torcedor');
 
 		$ativo = ($_POST['ativo'] == 'sim') ? 1 : 0;
@@ -91,64 +93,59 @@ class TorcedorController extends Action {
 		$torcedor->__set('email', $_POST['email']);
 		$torcedor->__set('ativo', $ativo);
 
-		if ($torcedor->validar()) {
-			if ($torcedor->salvar()) {
-				$this->view->sucessoCadastro = true;
-			} else {
-				$this->view->erroCadastro = true;
-			}
-		} else {
-			$this->view->erroCadastro = true;
-		}
-		
+        if ($torcedor->validar()) {
+            if ($torcedor->salvar()) {
+                $msg = 'ok';
+            } else {
+                $msg = 'erro';
+            }
+        } else {
+            $msg = 'erro';
+        }
 
-		$this->render('novo');
-		
+        $this->render('novo',$msg);
 	}
 
-	public function mensagem() {
-
-		$this->view->email = $_GET['email'];
-		$this->render('mensagem');
+	public function mensagem()
+    {
+        $email = $_GET['email'];
+        $this->render('mensagem', $email);
 	}
 
-	public function enviarEmail() {
-		
-		$email = $_POST['email'];
-		$assunto = $_POST['assunto'];
-		$mensagem = $_POST['mensagem'];
+	public function enviarEmail()
+    {
+        $email = $_POST['email'];
+        $assunto = $_POST['assunto'];
+        $mensagem = $_POST['mensagem'];
 
-		$mail = new PHPMailer(true);
+        $mail = new PHPMailer(true);
 
-		try {
-		   	
-		    $mail->SMTPDebug = false;  
-		    $mail->isSMTP();
-		    $mail->Host = 'smtp.gmail.com'; 
-		    $mail->SMTPAuth = true;                    
-		    $mail->Username = 'colocar email';//adicionar email para envio, lembrar de ativar permissoes de apps desconhecidos no gmail.        
-		    $mail->Password = 'senha email'; 
-		    $mail->SMTPSecure = 'tls';          
-		    $mail->Port = 587; 
+        try {
 
-		    $mail->setFrom('colocar email', 'Contato torcedor');
-		    $mail->addAddress($email);
-		    
-		    $mail->isHTML(true);
-		    $mail->Subject = $assunto;
-		    $mail->Body    = $mensagem;
-		    $mail->AltBody = 'É necessário utilizar um client que suporte HTML para ter acesso total ao conteúdo dessa mensagem';
+            $mail->SMTPDebug = false;
+            $mail->isSMTP();
+            $mail->Host = 'smtp.gmail.com';
+            $mail->SMTPAuth = true;
+            $mail->Username = 'colocar email';//adicionar email para envio, lembrar de ativar permissoes de apps desconhecidos no gmail.
+            $mail->Password = 'senha email';
+            $mail->SMTPSecure = 'tls';
+            $mail->Port = 587;
 
-		    $mail->send();
-		    $this->view->sucessoCadastro = true;
-		
-		} catch (Exception $e) {
+            $mail->setFrom('colocar email', 'Contato torcedor');
+            $mail->addAddress($email);
 
-			echo "Erro " . $mail->ErrorInfo;
-		}
-		$this->render('mensagem');
+            $mail->isHTML(true);
+            $mail->Subject = $assunto;
+            $mail->Body    = $mensagem;
+            $mail->AltBody = 'É necessário utilizar um client que suporte HTML para ter acesso total ao conteúdo dessa mensagem';
+
+            $mail->send();
+            $msg = 'ok';
+
+        } catch (Exception $e) {
+            echo "Erro " . $mail->ErrorInfo;
+        }
+
+        $this->render('mensagem', $msg);
 	}
-
 }
-
-?>

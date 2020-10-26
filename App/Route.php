@@ -4,10 +4,10 @@ namespace App;
 
 use MF\Init\Bootstrap;
 
-class Route extends Bootstrap {
-
-	protected function initRoutes() {
-
+class Route extends Bootstrap
+{
+	protected function initRoutes()
+    {
 		$routes['home'] = array(
 			'route' => '/',
 			'controller' => 'indexController',
@@ -67,16 +67,13 @@ class Route extends Bootstrap {
 			'controller' => 'TorcedorController',
 			'action' => 'mensagem'
 		);
-		
+
 		$routes['enviarEmail'] = array(
 			'route' => '/enviarEmail',
 			'controller' => 'TorcedorController',
 			'action' => 'enviarEmail'
 		);
-		
+
 		$this->setRoutes($routes);
 	}
-
 }
-
-?>

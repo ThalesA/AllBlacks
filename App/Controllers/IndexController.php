@@ -6,26 +6,27 @@ namespace App\Controllers;
 use MF\Controller\Action;
 use MF\Model\Container;
 
-class IndexController extends Action {
-
-	public function index() {
-
+class IndexController extends Action
+{
+	public function index()
+    {
 		$this->render('index');
 	}
 
-	public function enviar() {
+	public function enviar()
+    {
 		$this->render('enviar');
 	}
 
-	public function enviado() {
-		
+	public function enviado()
+    {
 		$torcedor = Container::getModel('Torcedor');
 
-		if (is_uploaded_file($_FILES['arquivo']['tmp_name'])) {	
+		if (is_uploaded_file($_FILES['arquivo']['tmp_name'])) {
 	   		$xml = simplexml_load_file($_FILES['arquivo']['tmp_name']);
-			
+
 				foreach($xml->torcedor as $item){
-			
+
 		        	$ativo = ($item['ativo'] == 'sim') ? 1 : 0;
 
 					$torcedor->__set('nome', $item['nome']);
@@ -38,19 +39,11 @@ class IndexController extends Action {
 					$torcedor->__set('telefone', $item['telefone']);
 					$torcedor->__set('email', $item['email']);
 					$torcedor->__set('ativo', $ativo);
-					
 					$torcedor->salvar();
 				}
-				
-			
-			$this->view->sucessoCadastro = true;
-			$this->render('enviar');
-				
+
+            $sucessoCadastro = true;
+            $this->render('enviar', $sucessoCadastro);
 		}
-
 	}
-
 }
-
-
-?>

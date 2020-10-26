@@ -18,24 +18,31 @@ class Torcedor extends Model {
 	private $email;
 	private $ativo;
 
-	public function __get($atributo) {
+	public function __get($atributo)
+    {
 		return $this->$atributo;
 	}
 
-	public function __set($atributo, $valor) {
+	public function __set($atributo, $valor)
+    {
 		$this->$atributo = $valor;
 	}
 
-	public function validar() {
-		if(empty($this->nome) || empty($this->documento) || empty($this->cep) || empty($this->endereco) || empty($this->bairro) || empty($this->cidade) || empty($this->uf) || empty($this->telefone) || empty($this->email) || empty($this->ativo)) {
+	public function validar()
+    {
+		if (empty($this->nome) || empty($this->documento)
+            || empty($this->cep) || empty($this->endereco)
+            || empty($this->bairro) || empty($this->cidade)
+            || empty($this->uf) || empty($this->telefone)
+            || empty($this->email) || empty($this->ativo)) {
 				return false;
 			}
 
 		return true;
 	}
 
-	public function salvar() {
-		
+	public function salvar()
+    {
 		$query = "INSERT INTO torcedores(nome, documento, cep, endereco, bairro, cidade, uf, telefone, email, ativo) VALUES(:nome, :documento, :cep, :endereco, :bairro, :cidade, :uf, :telefone, :email, :ativo)";
 		$stmt = $this->db->prepare($query);
 		$stmt->bindValue(':nome', $this->__get('nome'));
@@ -51,11 +58,10 @@ class Torcedor extends Model {
 		$stmt->execute();
 
 		return $this;
-
 	}
 
-	public function getAll() {
-
+	public function getAll()
+    {
 		$query = "SELECT * FROM torcedores";
 		$stmt = $this->db->prepare($query);
 		$stmt->execute();
@@ -63,7 +69,8 @@ class Torcedor extends Model {
 		return $stmt->fetchAll(\PDO::FETCH_ASSOC);
 	}
 
-	public function torcedorId($id) {
+	public function torcedorId($id)
+    {
 		$query = "SELECT * FROM torcedores WHERE id = :id";
 		$stmt = $this->db->prepare($query);
 		$stmt->bindValue(':id', $id);
@@ -72,18 +79,18 @@ class Torcedor extends Model {
 		return $stmt->fetch(\PDO::FETCH_ASSOC);
 	}
 
-	public function delete($id) {
-
+	public function delete($id)
+    {
 		$query = "DELETE FROM torcedores WHERE id = :id";
 		$stmt = $this->db->prepare($query);
 		$stmt->bindValue(':id', $id);
 		$stmt->execute();
 
 		return true;
-
 	}
 
-	public function update($id) {
+	public function update($id)
+    {
 		$query = "UPDATE torcedores SET telefone = :telefone, email = :email WHERE id = :id";
 		$stmt = $this->db->prepare($query);
 		$stmt->bindValue(':id', $id);
@@ -94,5 +101,3 @@ class Torcedor extends Model {
 		return $this;
 	}
 }
-
-?>

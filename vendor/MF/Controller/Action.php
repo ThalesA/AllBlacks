@@ -2,33 +2,16 @@
 
 namespace MF\Controller;
 
-abstract class Action {
+require_once '../vendor/autoload.php';
 
-	protected $view;
+abstract class Action
+{
+    protected function render($view, $array='')
+    {
+        $loader = new \Twig\Loader\FilesystemLoader('../App/Views/');
 
-	public function __construct() {
-		$this->view = new \stdClass();
-	}
+        $twig = new \Twig\Environment($loader);
 
-	protected function render($view, $layout = 'layout') {
-		$this->view->page = $view;
-
-		if(file_exists("../App/Views/".$layout.".phtml")) {
-			require_once "../App/Views/".$layout.".phtml";
-		} else {
-			$this->content();
-		}
-	}
-
-	protected function content() {
-		$classAtual = get_class($this);
-
-		$classAtual = str_replace('App\\Controllers\\', '', $classAtual);
-
-		$classAtual = strtolower(str_replace('Controller', '', $classAtual));
-
-		require_once "../App/Views/".$classAtual."/".$this->view->page.".phtml";
-	}
+        return print_r($twig->render(''.$view.'.phtml', array('dados' => $array )));
+    }
 }
-
-?>
