@@ -28,18 +28,19 @@ class Torcedor extends Model {
 		$this->$atributo = $valor;
 	}
 
-	public function validar()
-    {
-		if (empty($this->nome) || empty($this->documento)
-            || empty($this->cep) || empty($this->endereco)
-            || empty($this->bairro) || empty($this->cidade)
-            || empty($this->uf) || empty($this->telefone)
-            || empty($this->email) || empty($this->ativo)) {
-				return false;
-			}
+       public function validar()
+   {
+               if (empty($this->nome) || empty($this->documento)
+           || empty($this->cep) || empty($this->endereco)
+           || empty($this->bairro) || empty($this->cidade)
+           || empty($this->uf) || empty($this->telefone)
+           || empty($this->email)
+           || !isset($this->ativo) || $this->ativo === '') {
+                               return false;
+                       }
 
-		return true;
-	}
+               return true;
+       }
 
 	public function salvar()
     {
